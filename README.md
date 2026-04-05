@@ -310,4 +310,4 @@ MIT — built by Prima Hanura Akbar.
 
 ---
 
-*Fortuna is built on science-based brand measurement principles. Mental availability, physical availability, and Double Jeopardy normalization — in one platform.*
+*Fortuna is built on Ehrenberg-Bass-based brand measurement principles. Mental availability, physical availability, and Double Jeopardy normalization — in one platform.*
