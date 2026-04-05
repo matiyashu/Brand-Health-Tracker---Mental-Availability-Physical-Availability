@@ -3,7 +3,7 @@
 **A CBM-compliant brand health tracking platform built by Prima Hanura Akbar.**  
 Mental availability · Physical availability · Double Jeopardy normalization · Forecast engine — in one place.
 
-> Built on science-based brand measurement principles (Better Brand Health methodology). Designed for brand strategists and insights teams who want rigorous, methodology-first brand tracking.
+> Built on Ehrenberg-bass better health tracking-based brand measurement principles (Better Brand Health methodology). Designed for brand strategists and insights teams who want rigorous, methodology-first brand tracking.
 
 ---
 
