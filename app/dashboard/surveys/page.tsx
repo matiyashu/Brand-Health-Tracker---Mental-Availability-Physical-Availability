@@ -1,10 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { ClipboardList, CheckCircle2, Clock, AlertCircle, Plus, ExternalLink, Lock, GripVertical, ChevronDown, Upload, Sparkles } from 'lucide-react'
+import { ClipboardList, CheckCircle2, Clock, AlertCircle, Plus, ExternalLink, Lock, GripVertical, ChevronDown, Upload, Sparkles, Send, Mail, MessageCircle, Users, FileText } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-type Tab = 'waves' | 'library' | 'builder' | 'upload'
+type Tab = 'waves' | 'library' | 'builder' | 'upload' | 'distribute'
 
 const QUESTION_BLOCKS = [
   { id: 1,  name: 'Category Screening (Bounded Recall)', purpose: '12mo reference → 3mo target', auto: true,  core: true,  wording: 'In the last 12 months, have you bought any [CATEGORY]? → And in the last 3 months?' },
@@ -49,11 +49,39 @@ const mockUploadResults = [
   { question: 'NWOM — BCA', value: 6, wave: 'Q4 2024', type: 'wom' },
 ]
 
+const DEMO_SURVEY_URL = 'https://survey.fortuna-brandhealth.com/s/cc-q4-2024'
+
 export default function SurveysPage() {
   const [tab, setTab] = useState<Tab>('waves')
   const [expandedBlock, setExpandedBlock] = useState<number | null>(null)
   const [uploadState, setUploadState] = useState<'idle' | 'analyzing' | 'done'>('idle')
   const [uploadStep, setUploadStep] = useState(0)
+
+  // Distribution state
+  const [distChannels, setDistChannels] = useState<('email' | 'whatsapp')[]>(['email'])
+  const [csvText, setCsvText] = useState('')
+  const [surveyUrl, setSurveyUrl] = useState(DEMO_SURVEY_URL)
+  const [distSubject, setDistSubject] = useState("You're invited — share your brand feedback")
+  const [distState, setDistState] = useState<'idle' | 'sending' | 'done'>('idle')
+  const [distResult, setDistResult] = useState<{ sent: number; failed: number } | null>(null)
+
+  function toggleChannel(ch: 'email' | 'whatsapp') {
+    setDistChannels((prev) =>
+      prev.includes(ch) ? prev.filter((c) => c !== ch) : [...prev, ch]
+    )
+  }
+
+  async function handleDistribute() {
+    setDistState('sending')
+    // Parse CSV lines (demo: count commas as recipients)
+    const lines = csvText.trim().split('\n').filter(Boolean)
+    const count = Math.max(lines.length - 1, 0) // minus header
+
+    // Simulate API call
+    await new Promise((r) => setTimeout(r, 1800))
+    setDistResult({ sent: count || 3, failed: 0 })
+    setDistState('done')
+  }
 
   const steps = ['Parsing file structure…', 'Validating CBM compliance…', 'Computing KPIs…', 'Analysis complete']
 
@@ -90,10 +118,11 @@ export default function SurveysPage() {
       {/* Tabs */}
       <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1 w-fit flex-wrap">
         {([
-          { key: 'waves',   label: 'Survey Waves' },
-          { key: 'library', label: '17-Block Library' },
-          { key: 'builder', label: 'Survey Builder' },
-          { key: 'upload',  label: 'Upload Results' },
+          { key: 'waves',      label: 'Survey Waves' },
+          { key: 'library',    label: '17-Block Library' },
+          { key: 'builder',    label: 'Survey Builder' },
+          { key: 'upload',     label: 'Upload Results' },
+          { key: 'distribute', label: 'Distribute' },
         ] as { key: Tab; label: string }[]).map((t) => (
           <button
             key={t.key}
@@ -300,6 +329,150 @@ export default function SurveysPage() {
               <button className="px-4 py-2 rounded-lg border border-gray-200 text-gray-500 text-xs hover:text-gray-700 transition-colors">
                 Preview
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── DISTRIBUTE TAB ── */}
+      {tab === 'distribute' && (
+        <div className="space-y-5">
+          {/* Channel selector */}
+          <div className="rounded-xl bg-white border border-gray-200 p-5">
+            <p className="text-gray-900 font-semibold text-sm mb-1">Distribution Channels</p>
+            <p className="text-gray-400 text-xs mb-4">Choose how to send your survey invitations. WhatsApp requires a Meta Business account with an approved template.</p>
+            <div className="flex gap-3">
+              {([
+                { ch: 'email' as const,     icon: Mail,          label: 'Email',     sub: 'Via Resend or SMTP' },
+                { ch: 'whatsapp' as const,  icon: MessageCircle, label: 'WhatsApp',  sub: 'Meta Cloud API' },
+              ]).map(({ ch, icon: Icon, label, sub }) => (
+                <button
+                  key={ch}
+                  onClick={() => toggleChannel(ch)}
+                  className={cn(
+                    'flex items-center gap-3 px-4 py-3 rounded-xl border transition-all text-left',
+                    distChannels.includes(ch)
+                      ? 'border-neon-green bg-neon-green/5 text-gray-900'
+                      : 'border-gray-200 text-gray-400 hover:border-gray-300'
+                  )}
+                >
+                  <Icon className={cn('w-4 h-4 shrink-0', distChannels.includes(ch) ? 'text-neon-green' : 'text-gray-300')} />
+                  <div>
+                    <p className="text-xs font-semibold">{label}</p>
+                    <p className="text-[11px] text-gray-400">{sub}</p>
+                  </div>
+                  {distChannels.includes(ch) && <CheckCircle2 className="w-3.5 h-3.5 text-neon-green ml-auto shrink-0" />}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Survey URL */}
+          <div className="rounded-xl bg-white border border-gray-200 p-5">
+            <p className="text-gray-900 font-semibold text-sm mb-3">Survey Link</p>
+            <input
+              value={surveyUrl}
+              onChange={(e) => setSurveyUrl(e.target.value)}
+              className="w-full rounded-lg border border-gray-200 px-3 py-2 text-xs text-gray-700 focus:outline-none focus:border-neon-green/50"
+              placeholder="https://survey.example.com/s/your-survey-id"
+            />
+          </div>
+
+          {/* Email subject (if email selected) */}
+          {distChannels.includes('email') && (
+            <div className="rounded-xl bg-white border border-gray-200 p-5">
+              <p className="text-gray-900 font-semibold text-sm mb-3">Email Subject</p>
+              <input
+                value={distSubject}
+                onChange={(e) => setDistSubject(e.target.value)}
+                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-xs text-gray-700 focus:outline-none focus:border-neon-green/50"
+                placeholder="You're invited — share your brand feedback"
+              />
+            </div>
+          )}
+
+          {/* Recipient list */}
+          <div className="rounded-xl bg-white border border-gray-200 p-5">
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <p className="text-gray-900 font-semibold text-sm">Recipient List</p>
+                <p className="text-gray-400 text-xs mt-0.5">Paste CSV with header row: name,email,phone</p>
+              </div>
+              <span className="text-xs text-gray-400 flex items-center gap-1">
+                <Users className="w-3.5 h-3.5" />
+                {csvText.trim().split('\n').filter(Boolean).length > 1
+                  ? `${csvText.trim().split('\n').length - 1} recipients`
+                  : '—'}
+              </span>
+            </div>
+            <textarea
+              value={csvText}
+              onChange={(e) => setCsvText(e.target.value)}
+              rows={6}
+              className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-xs text-gray-700 font-mono focus:outline-none focus:border-neon-green/50 resize-none"
+              placeholder={'name,email,phone\nJohn Doe,john@example.com,+628111234567\nJane Smith,jane@example.com,+628219876543'}
+            />
+            <div className="mt-2 flex items-center gap-2">
+              <FileText className="w-3 h-3 text-gray-300" />
+              <p className="text-[11px] text-gray-400">Or upload a .csv file — Email column required for email channel, Phone (E.164 format) for WhatsApp</p>
+            </div>
+          </div>
+
+          {/* Send button */}
+          {distState === 'idle' && (
+            <button
+              onClick={handleDistribute}
+              disabled={distChannels.length === 0 || !surveyUrl || !csvText.trim()}
+              className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-neon-green text-white text-sm font-bold hover:bg-neon-green/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              <Send className="w-4 h-4" />
+              Send Survey Invitations
+            </button>
+          )}
+
+          {distState === 'sending' && (
+            <div className="flex items-center justify-center gap-3 py-5 rounded-xl border border-gray-200 bg-gray-50">
+              <div className="w-4 h-4 rounded-full border-2 border-neon-green border-t-transparent animate-spin" />
+              <p className="text-sm text-gray-600 font-medium">Sending invitations…</p>
+            </div>
+          )}
+
+          {distState === 'done' && distResult && (
+            <div className="rounded-xl border border-neon-green/20 bg-neon-green/5 p-5">
+              <div className="flex items-center gap-3 mb-3">
+                <CheckCircle2 className="w-5 h-5 text-neon-green" />
+                <p className="text-gray-900 font-semibold text-sm">Distribution Complete</p>
+              </div>
+              <div className="flex gap-6 text-sm">
+                <div>
+                  <p className="text-gray-400 text-xs mb-0.5">Sent</p>
+                  <p className="text-neon-green font-bold text-xl">{distResult.sent}</p>
+                </div>
+                <div>
+                  <p className="text-gray-400 text-xs mb-0.5">Failed</p>
+                  <p className={cn('font-bold text-xl', distResult.failed > 0 ? 'text-red-500' : 'text-gray-300')}>{distResult.failed}</p>
+                </div>
+                <div>
+                  <p className="text-gray-400 text-xs mb-0.5">Channels</p>
+                  <p className="text-gray-700 font-semibold text-sm capitalize">{distChannels.join(' + ')}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => { setDistState('idle'); setDistResult(null); setCsvText('') }}
+                className="mt-4 text-xs text-gray-400 hover:text-gray-700 transition-colors"
+              >
+                Send another batch →
+              </button>
+            </div>
+          )}
+
+          {/* Configuration reminder */}
+          <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
+            <p className="text-xs text-amber-700 font-semibold mb-1">Production Setup Required</p>
+            <div className="space-y-1 text-xs text-amber-600">
+              <p><span className="font-mono bg-amber-100 px-1 rounded">RESEND_API_KEY</span> — Resend account for email delivery</p>
+              <p><span className="font-mono bg-amber-100 px-1 rounded">WHATSAPP_PHONE_NUMBER_ID</span> + <span className="font-mono bg-amber-100 px-1 rounded">WHATSAPP_ACCESS_TOKEN</span> — Meta Business dashboard</p>
+              <p><span className="font-mono bg-amber-100 px-1 rounded">WHATSAPP_TEMPLATE_NAME</span> — Approved WhatsApp template name</p>
             </div>
           </div>
         </div>

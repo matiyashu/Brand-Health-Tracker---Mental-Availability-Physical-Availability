@@ -5,6 +5,7 @@ import { brandsRouter } from './brands'
 import { cepsRouter } from './ceps'
 import { linkageRouter } from './linkage'
 import { analyticsRouter } from './analytics'
+import { distributionRouter } from './distribution'
 
 export const appRouter = router({
   projects: projectsRouter,
@@ -13,6 +14,7 @@ export const appRouter = router({
   ceps: cepsRouter,
   linkage: linkageRouter,
   analytics: analyticsRouter,
+  distribution: distributionRouter,
 })
 
 export type AppRouter = typeof appRouter
