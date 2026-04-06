@@ -1,0 +1,115 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  # ── Next.js lint + build ────────────────────────────────────────────────────
+  nextjs:
+    name: Next.js — Lint & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+        env:
+          DATABASE_URL: "postgresql://user:pass@localhost:5432/dummy"
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Build
+        run: npm run build
+        env:
+          DATABASE_URL: "postgresql://user:pass@localhost:5432/dummy"
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ""
+          CLERK_SECRET_KEY: ""
+          ANALYTICS_SERVICE_URL: "http://localhost:8000"
+
+  # ── Python analytics service ────────────────────────────────────────────────
+  analytics-service:
+    name: Python — Analytics Service
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: analytics-service/requirements.txt
+
+      - name: Install Python dependencies
+        run: pip install -r analytics-service/requirements.txt
+
+      - name: Run tests
+        run: python -m pytest analytics-service/tests/ -v
+        continue-on-error: true   # Tests are optional until Phase 7
+
+  # ── CBM formula contract guard ─────────────────────────────────────────────
+  methodology-guard:
+    name: CBM — Formula Contract Guard
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout base
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.base_ref }}
+          path: base
+
+      - name: Checkout PR
+        uses: actions/checkout@v4
+        with:
+          path: pr
+
+      - name: Check formula contracts unchanged
+        run: |
+          echo "Checking CBM formula contracts are not modified..."
+          CONTRACTS_DIR="lib/cbm-engine/formula-contracts"
+          changed=false
+          for f in base/$CONTRACTS_DIR/*.ts; do
+            fname=$(basename "$f")
+            if ! diff -q "$f" "pr/$CONTRACTS_DIR/$fname" > /dev/null 2>&1; then
+              echo "❌ Formula contract modified: $fname"
+              changed=true
+            fi
+          done
+          if [ "$changed" = true ]; then
+            echo ""
+            echo "Formula contracts in /lib/cbm-engine/formula-contracts/ are FROZEN."
+            echo "Any modification requires a 'methodology-review-approved' label on this PR."
+            echo ""
+            # Check for the approval label
+            LABELS='${{ toJson(github.event.pull_request.labels.*.name) }}'
+            if echo "$LABELS" | grep -q "methodology-review-approved"; then
+              echo "✅ methodology-review-approved label found — allowing changes."
+            else
+              echo "Add the 'methodology-review-approved' label to proceed."
+              exit 1
+            fi
+          else
+            echo "✅ Formula contracts unchanged."
+          fi

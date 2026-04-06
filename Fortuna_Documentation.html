@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fortuna Brand Health Tracker — Documentation</title>
+<style>
+  body {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11pt;
+    color: #1a1a1a;
+    max-width: 820px;
+    margin: 40px auto;
+    line-height: 1.6;
+  }
+  h1 { font-size: 22pt; color: #0FA958; border-bottom: 3px solid #0FA958; padding-bottom: 8px; margin-top: 0; }
+  h2 { font-size: 15pt; color: #1a1a1a; border-bottom: 1px solid #e0e0e0; padding-bottom: 4px; margin-top: 30px; }
+  h3 { font-size: 12pt; color: #333; margin-top: 20px; margin-bottom: 6px; }
+  h4 { font-size: 11pt; color: #0FA958; margin-bottom: 4px; }
+  p { margin: 6px 0 10px 0; }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 12px 0 20px 0;
+    font-size: 10.5pt;
+  }
+  th {
+    background-color: #0FA958;
+    color: white;
+    padding: 7px 10px;
+    text-align: left;
+    font-weight: bold;
+  }
+  td {
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background-color: #f9fafb; }
+  code {
+    font-family: Consolas, Courier New, monospace;
+    background: #f3f4f6;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 10pt;
+    color: #1a1a1a;
+  }
+  pre {
+    background: #1a1a1a;
+    color: #e5e7eb;
+    padding: 14px 18px;
+    border-radius: 6px;
+    font-family: Consolas, Courier New, monospace;
+    font-size: 10pt;
+    margin: 10px 0 18px 0;
+    overflow-x: auto;
+  }
+  .callout {
+    background: #f0fdf4;
+    border-left: 4px solid #0FA958;
+    padding: 10px 14px;
+    margin: 12px 0;
+    border-radius: 0 6px 6px 0;
+  }
+  .callout-amber {
+    background: #fffbeb;
+    border-left: 4px solid #f59e0b;
+    padding: 10px 14px;
+    margin: 12px 0;
+    border-radius: 0 6px 6px 0;
+  }
+  .callout-blue {
+    background: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    padding: 10px 14px;
+    margin: 12px 0;
+    border-radius: 0 6px 6px 0;
+  }
+  ul, ol { padding-left: 22px; margin: 6px 0 12px 0; }
+  li { margin-bottom: 4px; }
+  .label {
+    display: inline-block;
+    background: #0FA958;
+    color: white;
+    font-size: 8.5pt;
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-right: 6px;
+  }
+  .label-gray { background: #6b7280; }
+  .label-amber { background: #f59e0b; }
+  .section-divider {
+    border: none;
+    border-top: 2px solid #e5e7eb;
+    margin: 30px 0;
+  }
+  .cover {
+    text-align: center;
+    padding: 60px 20px 40px;
+    border-bottom: 3px solid #0FA958;
+    margin-bottom: 40px;
+  }
+  .cover h1 { border: none; font-size: 28pt; }
+  .cover .subtitle { font-size: 13pt; color: #6b7280; margin-top: 8px; }
+  .cover .meta { font-size: 10pt; color: #9ca3af; margin-top: 20px; }
+  .toc li { margin-bottom: 6px; }
+  .toc a { color: #0FA958; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<!-- ══ COVER ══════════════════════════════════════════════════════════════════ -->
+<div class="cover">
+  <div style="display:inline-block; background:#0FA958; color:white; font-size:22pt; font-weight:900; width:50px; height:50px; line-height:50px; border-radius:10px; margin-bottom:12px;">F</div>
+  <h1>Fortuna Brand Health Tracker</h1>
+  <p class="subtitle">Product Documentation — How It Works · Data Requirements · Dependencies</p>
+  <p class="meta">Built by Prima Hanura Akbar &nbsp;·&nbsp; CBM-Compliant &nbsp;·&nbsp; Science-Based Brand Measurement<br>
+  Version 0.5 &nbsp;·&nbsp; April 2026</p>
+</div>
+
+<!-- ══ TABLE OF CONTENTS ═══════════════════════════════════════════════════════ -->
+<h2>Table of Contents</h2>
+<ol class="toc">
+  <li><a href="#overview">Product Overview</a></li>
+  <li><a href="#how-it-works">How the App Works</a></li>
+  <li><a href="#data">Data Required to Run the App</a></li>
+  <li><a href="#pages">Page-by-Page Guide</a></li>
+  <li><a href="#methodology">CBM Methodology Reference</a></li>
+  <li><a href="#dependencies">Dependencies &amp; Tech Stack</a></li>
+  <li><a href="#setup">Setup &amp; Running Locally</a></li>
+  <li><a href="#formulas">Formula Reference</a></li>
+</ol>
+
+<hr class="section-divider">
+
+<!-- ══ 1. OVERVIEW ════════════════════════════════════════════════════════════ -->
+<h2 id="overview">1. Product Overview</h2>
+
+<p>Fortuna is a <strong>CBM-compliant brand health tracking platform</strong> that measures how strongly a brand is present in category buyers' minds at the moments they enter the category. It is designed for brand strategists, insights teams, and marketing planners.</p>
+
+<p>Unlike traditional brand tracking (awareness scores, likeability), Fortuna measures <strong>mental availability</strong> — the probability that a buyer will think of your brand when the need to buy arises — using the <strong>Category Buyer Memory (CBM)</strong> methodology.</p>
+
+<div class="callout">
+  <strong>The Core Question Fortuna Answers:</strong><br>
+  "Which brand do buyers think of — and in which buying situations — when they enter this category?"
+</div>
+
+<h3>Who Is It For?</h3>
+<table>
+  <tr><th>User</th><th>Primary Use</th></tr>
+  <tr><td>Brand Managers</td><td>Track MPen, MMS, and competitive position wave over wave</td></tr>
+  <tr><td>Insights / Research Teams</td><td>Design CBM-compliant surveys, upload fieldwork data, review compliance</td></tr>
+  <tr><td>Media Planners</td><td>Measure effective reach and correct branding for each campaign creative</td></tr>
+  <tr><td>Strategy Consultants</td><td>Use forecast tools and Mental Advantage maps to build brand growth briefs</td></tr>
+</table>
+
+<hr class="section-divider">
+
+<!-- ══ 2. HOW IT WORKS ════════════════════════════════════════════════════════ -->
+<h2 id="how-it-works">2. How the App Works</h2>
+
+<h3>Current State (v0.5 — UI Build)</h3>
+<p>Fortuna v0.5 is a <strong>fully functional front-end prototype</strong>. All dashboards, charts, and analytics pages are built and running with <strong>sample/demo data</strong> pre-populated. No backend database or authentication is required to run it locally.</p>
+
+<div class="callout-amber">
+  <strong>Important:</strong> The current version uses hard-coded sample data (Indonesian Credit Cards category — BCA as focal brand). A backend database (Phase 1) is planned but not yet implemented. All data entry via modals is UI-only — it does not persist between page refreshes.
+</div>
+
+<h3>Architecture at a Glance</h3>
+<table>
+  <tr><th>Layer</th><th>What It Does</th></tr>
+  <tr><td>Next.js App Router</td><td>Handles routing, server/client components, page rendering</td></tr>
+  <tr><td>React Context (SegmentContext)</td><td>Shares the active segment (Non-buyers+Light / Heavy / Overall) across all dashboard pages globally</td></tr>
+  <tr><td>Page Components</td><td>Each analytics page is a self-contained React component with its own data constants and chart logic</td></tr>
+  <tr><td>Recharts</td><td>Renders all charts (bar, line, scatter)</td></tr>
+  <tr><td>DataEntryModal</td><td>Reusable component for manual data entry + Excel upload on every analytics page</td></tr>
+  <tr><td>CBM Engine (lib/)</td><td>Frozen formula contracts and compliance validators — not yet wired to live data</td></tr>
+</table>
+
+<h3>User Flow</h3>
+<ol>
+  <li>User lands on <strong>http://localhost:3000</strong> — sees the landing page</li>
+  <li>Clicks <strong>Open Dashboard</strong> → enters the dashboard at <code>/dashboard</code></li>
+  <li>The <strong>Segment Toggle</strong> (top right of each page) switches between:<br>
+    — <em>Non-buyers + Light</em> (default — recruitment focus)<br>
+    — <em>Heavy Buyers</em> (retention focus)<br>
+    — <em>Overall</em> (competitive benchmarking)
+  </li>
+  <li>All charts, KPI cards, and analysis text update dynamically when the segment changes</li>
+  <li>Each analytics page has an <strong>Add Data</strong> button — opens a modal for manual entry or Excel upload</li>
+  <li>The <strong>Sidebar</strong> provides navigation across all 11 pages</li>
+</ol>
+
+<h3>Segment System</h3>
+<p>The segment toggle is the most important control in the app. It drives different views across all pages:</p>
+<table>
+  <tr><th>Segment</th><th>Who</th><th>Primary KPI</th><th>Strategic Goal</th></tr>
+  <tr><td>Non-buyers + Light (Default)</td><td>Infrequent buyers / never bought</td><td>Mental Penetration (MPen)</td><td>Recruitment / Growth</td></tr>
+  <tr><td>Heavy Buyers</td><td>Frequent purchasers of your brand</td><td>Share of Mind (SoM)</td><td>Retention</td></tr>
+  <tr><td>Overall</td><td>Full sample — all category buyers</td><td>Mental Market Share (MMS)</td><td>Competitive benchmarking</td></tr>
+</table>
+
+<hr class="section-divider">
+
+<!-- ══ 3. DATA REQUIRED ════════════════════════════════════════════════════════ -->
+<h2 id="data">3. Data Required to Run the App</h2>
+
+<h3>3.1 To Run Right Now (Demo Mode)</h3>
+<div class="callout">
+  <strong>No data input required.</strong> The app runs immediately after <code>npm install &amp;&amp; npm run dev</code>. All pages are pre-populated with sample data for the Indonesian Credit Cards category (BCA as focal brand, Q4 2024 wave).
+</div>
+
+<h3>3.2 To Use With Real Data (Current Version)</h3>
+<p>Because there is no database yet, real data must be entered directly into the page source files (<code>app/dashboard/[page]/page.tsx</code>). Each page has data constants at the top that can be replaced with actual wave values.</p>
+
+<h3>3.3 Data Required Per Page</h3>
+
+<table>
+  <tr>
+    <th>Page</th>
+    <th>Data Needed</th>
+    <th>Format</th>
+  </tr>
+  <tr>
+    <td><strong>Dashboard Overview</strong></td>
+    <td>MPen %, MMS %, Network Score, SoM/Prompted Awareness per segment per wave. Competitive analysis text.</td>
+    <td>% values per brand per segment per wave</td>
+  </tr>
+  <tr>
+    <td><strong>Brand KPIs (Analytics)</strong></td>
+    <td>MPen, MMS, NS, SoM for all brands in category. Both non-light and heavy buyer cuts.</td>
+    <td>% values per brand per segment</td>
+  </tr>
+  <tr>
+    <td><strong>Mental Advantage</strong></td>
+    <td>Binary linkage matrix: for each brand × CEP combination, the % of buyers who link them. All brands, all CEPs.</td>
+    <td>Matrix of % values (brands as rows, CEPs as columns)</td>
+  </tr>
+  <tr>
+    <td><strong>Physical Availability — Presence</strong></td>
+    <td>Channel coverage %: for each distribution channel (branches, ATMs, online, agent banking, etc.), what % coverage does the brand have vs category norm?</td>
+    <td>% per channel, brand vs norm</td>
+  </tr>
+  <tr>
+    <td><strong>Physical Availability — Portfolio</strong></td>
+    <td>SKU-level sales %, penetration %, efficiency ratio for each card product. Duplication of purchase rates between SKUs.</td>
+    <td>% per SKU</td>
+  </tr>
+  <tr>
+    <td><strong>Physical Availability — Prominence</strong></td>
+    <td>Fame score (% who recognise the asset) and Uniqueness score (% who attribute it only to your brand) for each distinctive asset.</td>
+    <td>Scores 0–100 per asset</td>
+  </tr>
+  <tr>
+    <td><strong>Marketing Reach</strong></td>
+    <td>Noticed % (effective reach) and Correctly Branded % per creative execution per wave. Tested on de-branded stimuli.</td>
+    <td>% per creative per wave</td>
+  </tr>
+  <tr>
+    <td><strong>WOM Tracker</strong></td>
+    <td>PWOM and NWOM per 100 category buyers for each brand per wave. Binary measurement (yes/no in past month).</td>
+    <td>Count per 100 buyers per brand per wave</td>
+  </tr>
+  <tr>
+    <td><strong>Forecast — DJ Forecast</strong></td>
+    <td>Penetration % and purchase frequency per brand per wave. At least 3 brands to fit the DJ curve.</td>
+    <td>% pen + frequency (times/year) per brand</td>
+  </tr>
+  <tr>
+    <td><strong>Forecast — MMS → Sales</strong></td>
+    <td>MMS % and SMS (Sales Market Share %) per wave, matched quarter.</td>
+    <td>% per wave (minimum 4 data points to calculate r)</td>
+  </tr>
+  <tr>
+    <td><strong>CEP Builder</strong></td>
+    <td>List of Category Entry Points for the category (buying occasions). Categorised as CEP / Baseline Competency / Secondary Attribute.</td>
+    <td>Text list with type classification</td>
+  </tr>
+  <tr>
+    <td><strong>Surveys</strong></td>
+    <td>Fieldwork data: respondent-level or aggregate binary linkage scores per brand × CEP. Exported from your survey platform (SPSS, Excel, etc.).</td>
+    <td>Excel file matching the downloadable template format</td>
+  </tr>
+</table>
+
+<h3>3.4 Sample Survey Data Format</h3>
+<p>When uploading via the Data Entry Modal, the expected CSV template columns are:</p>
+<table>
+  <tr><th>Page</th><th>CSV Template Headers</th></tr>
+  <tr><td>Mental Advantage</td><td>Brand, CEP, Actual %, Expected %</td></tr>
+  <tr><td>Physical Availability — Presence</td><td>Channel, BCA Coverage %, Category Norm %</td></tr>
+  <tr><td>Physical Availability — Portfolio</td><td>SKU, Sales %, Penetration %, Efficiency Ratio</td></tr>
+  <tr><td>Physical Availability — Prominence</td><td>Asset, Fame Score, Uniqueness Score</td></tr>
+  <tr><td>Marketing Reach</td><td>Creative Name, Noticed %, Correctly Branded %, Wave</td></tr>
+  <tr><td>WOM Tracker</td><td>Brand, PWOM, NWOM, Wave</td></tr>
+  <tr><td>DJ Forecast</td><td>Wave, Brand, Penetration %, Frequency (times/yr)</td></tr>
+  <tr><td>MMS → Sales</td><td>Wave, MMS %, SMS %</td></tr>
+</table>
+
+<div class="callout-blue">
+  <strong>How to download templates:</strong> In any page, click the <strong>Add Data</strong> button (top right). In the modal that opens, click <strong>Download Template</strong>. A pre-formatted CSV file will be saved to your downloads folder.
+</div>
+
+<h3>3.5 Data Quality Requirements (CBM Methodology)</h3>
+<table>
+  <tr><th>Requirement</th><th>Why It Matters</th></tr>
+  <tr><td>Survey format: binary pick-any only</td><td>Likert scales introduce acquiescence bias and inflate all brands equally. Binary forces genuine top-of-mind association.</td></tr>
+  <tr><td>Brand ordering: alphabetical</td><td>Position bias — brands listed first get higher selection rates. Alphabetical order eliminates this.</td></tr>
+  <tr><td>No superlatives in CEP wording</td><td>"Most trusted" biases toward market leaders. Use plain-form: "trusted."</td></tr>
+  <tr><td>Non-buyer quota ≥30% of sample</td><td>Non-buyers are the growth pool. Under-sampling them skews all growth metrics.</td></tr>
+  <tr><td>Minimum n=500 category buyers per wave</td><td>Below this, estimates are unstable. For subgroups, n≥100 required.</td></tr>
+  <tr><td>Same sample base for all brands</td><td>Scores must be comparable — different bases cannot be fairly benchmarked.</td></tr>
+  <tr><td>CEP measured in past 12 months screener</td><td>Bounded recall ensures only active category buyers are included.</td></tr>
+</table>
+
+<hr class="section-divider">
+
+<!-- ══ 4. PAGES ═══════════════════════════════════════════════════════════════ -->
+<h2 id="pages">4. Page-by-Page Guide</h2>
+
+<h3>4.1 Dashboard Overview <code>/dashboard</code></h3>
+<p>Segment-aware command centre. Shows 4 KPI cards, a segment analysis panel, and a MMS vs SMS gap diagnosis. The content changes entirely when you switch segments.</p>
+<ul>
+  <li><strong>KPI Cards:</strong> MPen, MMS, NS, SoM (or Prompted Awareness) — each with wave-on-wave delta</li>
+  <li><strong>Segment Banner:</strong> Active segment + primary KPI + strategic goal label</li>
+  <li><strong>Key Insight:</strong> CEO-ready headline + recommendation — unique per segment</li>
+  <li><strong>MMS vs SMS Gap:</strong> Diagnoses whether the problem is mental (MMS &lt; SMS) or physical (MMS &gt; SMS)</li>
+</ul>
+
+<h3>4.2 Brand KPIs <code>/dashboard/analytics</code></h3>
+<p>Competitive benchmarking. All brands ranked by the focal segment's primary KPI. DJ-normalized bar chart.</p>
+
+<h3>4.3 Mental Advantage <code>/dashboard/mental-advantage</code></h3>
+<p>Brand × CEP heatmap. Each cell shows deviation from DJ-expected score.</p>
+<table>
+  <tr><th>Cell Label</th><th>Deviation</th><th>Action</th></tr>
+  <tr><td>DEFEND</td><td>≥+5pp above expected</td><td>Protect in media — this is a mental asset</td></tr>
+  <tr><td>MAINTAIN</td><td>Within ±4pp</td><td>Hold activity — no urgent action</td></tr>
+  <tr><td>BUILD</td><td>≤−5pp below expected</td><td>Target in next campaign — mental gap</td></tr>
+</table>
+
+<h3>4.4 Physical Availability <code>/dashboard/physical</code></h3>
+<p>Five tabs: Overview · Presence (channel coverage) · Portfolio (SKU contribution) · Prominence (distinctive assets) · Gap Analysis (MMS vs SMS diagnosis per segment).</p>
+
+<h3>4.5 Marketing Reach <code>/dashboard/reach</code></h3>
+<p>Creative effectiveness tracker. Noticed % + Correct Branding % + Branding Ratio per creative per wave. Below 60% Branding Ratio = "vampire creative" flag.</p>
+
+<h3>4.6 WOM Tracker <code>/dashboard/wom</code></h3>
+<p>PWOM and NWOM per 100 category buyers. Net WOM = PWOM − NWOM. WOM Ratio = PWOM ÷ NWOM (&gt;4× is strong).</p>
+
+<h3>4.7 Forecast <code>/dashboard/forecast</code></h3>
+<p>Five forecast methodologies in tabs:</p>
+<table>
+  <tr><th>Tab</th><th>What It Does</th></tr>
+  <tr><td>DJ Forecast</td><td>Scatter chart of all brands on the Double Jeopardy curve. Scenario builder: set target penetration → predicted frequency output.</td></tr>
+  <tr><td>CEP Expected Scores</td><td>Full brand × CEP matrix with Actual / Expected / Deviation — numerical version of the heatmap.</td></tr>
+  <tr><td>MMS → Sales</td><td>Dual-line historical chart + projection. MMS leads SMS by 1–2 quarters at r=0.83.</td></tr>
+  <tr><td>AI Predictions</td><td>Media spend multiplier slider → projected MPen &amp; MMS. Category twin benchmarks. Trend alerts.</td></tr>
+  <tr><td>Growth Potential</td><td>MPen by segment, growth waterfall, recruitment vs network size priority.</td></tr>
+</table>
+
+<h3>4.8 CEP Builder <code>/dashboard/ceps</code></h3>
+<p>Build a CBM-compliant attribute list using the 7W framework. Composition meter enforces 60–70% CEPs. CBM Engine flags wording violations in real time.</p>
+
+<h3>4.9 Surveys <code>/dashboard/surveys</code></h3>
+<p>Block-based survey canvas. 17 question blocks in the library. Core blocks (mandatory) cannot be removed. Upload Results tab accepts Excel fieldwork data.</p>
+
+<h3>4.10 Reports <code>/dashboard/reports</code></h3>
+<p>Generate: Executive Summary PDF · Full Deck PPTX · CBM Compliance Report · Raw Data XLSX.</p>
+
+<h3>4.11 Help <code>/dashboard/help</code></h3>
+<p>Full in-app product manual — covers every page, how to use it, how to interpret the data, methodology guide, KPI reference (8 metrics), and FAQ.</p>
+
+<hr class="section-divider">
+
+<!-- ══ 5. METHODOLOGY ══════════════════════════════════════════════════════════ -->
+<h2 id="methodology">5. CBM Methodology Reference</h2>
+
+<h3>The CBM Mantra</h3>
+<table>
+  <tr><th>#</th><th>Principle</th><th>What It Means in Practice</th></tr>
+  <tr><td>1</td><td>Design for the Category</td><td>CEPs belong to the category, not the brand. Every brand is measured against the same buying occasions.</td></tr>
+  <tr><td>2</td><td>Analyse for the Buyer</td><td>Non-buyers + light buyers are the default, primary segment. They are the growth pool.</td></tr>
+  <tr><td>3</td><td>Report for the Brand</td><td>Scores are DJ-normalized — small and large brands are fairly compared by deviation from expected.</td></tr>
+</table>
+
+<h3>Double Jeopardy (DJ) Law</h3>
+<p>Brands with lower penetration suffer <em>double</em> — they have fewer buyers AND those buyers buy them less frequently. This is a market law, not a strategy. Brands naturally cluster along the DJ curve.</p>
+<ul>
+  <li><strong>Above the DJ curve:</strong> structural advantage (unusual)</li>
+  <li><strong>On the DJ curve:</strong> performance matches brand size</li>
+  <li><strong>Below the DJ curve:</strong> loyalty problem — buyers leaving faster than expected</li>
+</ul>
+
+<h3>Category Entry Points (CEPs)</h3>
+<p>A CEP is a situational trigger that activates category buying. CEPs are buying occasions — not brand attributes. They are derived using the <strong>7W Framework</strong>:</p>
+<table>
+  <tr><th>W</th><th>Question</th><th>Example CEP (Credit Cards)</th></tr>
+  <tr><td>Who</td><td>Who is the buyer?</td><td>"When paying for my family's expenses"</td></tr>
+  <tr><td>What</td><td>What is the occasion?</td><td>"When making an online purchase"</td></tr>
+  <tr><td>When</td><td>When does the need arise?</td><td>"When travelling internationally"</td></tr>
+  <tr><td>Where</td><td>Where does it happen?</td><td>"When checking out at a restaurant"</td></tr>
+  <tr><td>Why</td><td>What triggers it?</td><td>"When I need emergency cash"</td></tr>
+  <tr><td>With What</td><td>What tool is used?</td><td>"When tapping to pay contactlessly"</td></tr>
+  <tr><td>With Whom</td><td>Who is involved?</td><td>"When splitting a bill with friends"</td></tr>
+</table>
+
+<h3>MMS vs SMS Gap — Diagnosis Framework</h3>
+<table>
+  <tr><th>Condition</th><th>Meaning</th><th>Recommended Action</th></tr>
+  <tr><td>MMS &gt; SMS (positive gap)</td><td>Physical availability problem — buyers think of the brand but can't find or buy it</td><td>Expand distribution. Close channel coverage gaps.</td></tr>
+  <tr><td>MMS &lt; SMS (negative gap)</td><td>Mental availability problem — sales driven by habit, mental links are fragile</td><td>Reinforce CEP coverage in media. Build distinctive assets.</td></tr>
+  <tr><td>MMS ≈ SMS (gap &lt; ±3pp)</td><td>Healthy parity</td><td>Maintain current investment mix.</td></tr>
+</table>
+
+<hr class="section-divider">
+
+<!-- ══ 6. DEPENDENCIES ═════════════════════════════════════════════════════════ -->
+<h2 id="dependencies">6. Dependencies &amp; Tech Stack</h2>
+
+<h3>6.1 Runtime Requirements</h3>
+<table>
+  <tr><th>Requirement</th><th>Version</th><th>Where to Download</th></tr>
+  <tr><td>Node.js</td><td>18.0 or higher</td><td>https://nodejs.org</td></tr>
+  <tr><td>npm</td><td>Comes with Node.js</td><td>Included with Node</td></tr>
+  <tr><td>Git</td><td>Any recent version</td><td>https://git-scm.com</td></tr>
+</table>
+
+<div class="callout">
+  <strong>That's it for the current UI build.</strong> No database, no Redis, no Python service, no API keys required. Just Node.js 18+ and npm.
+</div>
+
+<h3>6.2 Core npm Dependencies</h3>
+<table>
+  <tr><th>Package</th><th>Version</th><th>Purpose</th></tr>
+  <tr><td>next</td><td>14.2.35</td><td>React framework — App Router, server/client components, routing</td></tr>
+  <tr><td>react</td><td>^18</td><td>UI component library</td></tr>
+  <tr><td>react-dom</td><td>^18</td><td>React DOM renderer</td></tr>
+  <tr><td>typescript</td><td>^5</td><td>TypeScript language support</td></tr>
+  <tr><td>tailwindcss</td><td>^3.4.1</td><td>Utility-first CSS framework — all styling</td></tr>
+  <tr><td>recharts</td><td>^2.15.3</td><td>Chart library — all bar, line, scatter charts</td></tr>
+  <tr><td>lucide-react</td><td>^0.513.0</td><td>Icon library — all icons throughout the UI</td></tr>
+  <tr><td>clsx</td><td>^2.1.1</td><td>Conditional className utility</td></tr>
+  <tr><td>tailwind-merge</td><td>^3.3.0</td><td>Merges conflicting Tailwind classes</td></tr>
+  <tr><td>class-variance-authority</td><td>^0.7.1</td><td>Variant-based component styling (used in Button)</td></tr>
+</table>
+
+<h3>6.3 Dev Dependencies</h3>
+<table>
+  <tr><th>Package</th><th>Purpose</th></tr>
+  <tr><td>@types/node</td><td>TypeScript types for Node.js</td></tr>
+  <tr><td>@types/react</td><td>TypeScript types for React</td></tr>
+  <tr><td>@types/react-dom</td><td>TypeScript types for React DOM</td></tr>
+  <tr><td>eslint</td><td>JavaScript/TypeScript linter</td></tr>
+  <tr><td>eslint-config-next</td><td>Next.js ESLint ruleset</td></tr>
+  <tr><td>postcss</td><td>CSS post-processor (required by Tailwind)</td></tr>
+  <tr><td>autoprefixer</td><td>Adds CSS vendor prefixes automatically</td></tr>
+</table>
+
+<h3>6.4 Planned Dependencies (Phase 1+, Not Yet Installed)</h3>
+<table>
+  <tr><th>Package</th><th>Purpose</th><th>Phase</th></tr>
+  <tr><td>@prisma/client + prisma</td><td>ORM — database models and queries</td><td>Phase 1</td></tr>
+  <tr><td>@clerk/nextjs</td><td>Authentication and organisation management</td><td>Phase 1</td></tr>
+  <tr><td>@trpc/server + @trpc/client</td><td>Type-safe API layer</td><td>Phase 1</td></tr>
+  <tr><td>@anthropic-ai/sdk</td><td>Claude API — AI CEP generation, trend analysis</td><td>Phase 5</td></tr>
+  <tr><td>resend</td><td>Transactional email (survey invites, reports)</td><td>Phase 6</td></tr>
+  <tr><td>ioredis</td><td>Redis client for caching analytics results</td><td>Phase 3</td></tr>
+</table>
+
+<h3>6.5 Full Tech Stack (Planned Architecture)</h3>
+<table>
+  <tr><th>Layer</th><th>Technology</th></tr>
+  <tr><td>Frontend</td><td>Next.js 14, TypeScript, Tailwind CSS, Recharts</td></tr>
+  <tr><td>Authentication</td><td>Clerk (org-based multi-tenancy)</td></tr>
+  <tr><td>API</td><td>tRPC (type-safe, end-to-end)</td></tr>
+  <tr><td>Database ORM</td><td>Prisma</td></tr>
+  <tr><td>Database</td><td>PostgreSQL (hosted on Supabase)</td></tr>
+  <tr><td>Analytics Engine</td><td>Python FastAPI microservice (DJ normalization at scale)</td></tr>
+  <tr><td>Caching</td><td>Redis</td></tr>
+  <tr><td>AI</td><td>Anthropic Claude API (CEP generator, category twin matching)</td></tr>
+  <tr><td>Email</td><td>Resend</td></tr>
+  <tr><td>CI/CD</td><td>GitHub Actions → Vercel (frontend)</td></tr>
+  <tr><td>Testing</td><td>Vitest (unit), Playwright (e2e)</td></tr>
+</table>
+
+<hr class="section-divider">
+
+<!-- ══ 7. SETUP ════════════════════════════════════════════════════════════════ -->
+<h2 id="setup">7. Setup &amp; Running Locally</h2>
+
+<h3>Step 1 — Install Node.js</h3>
+<p>Download and install Node.js 18 or higher from <strong>https://nodejs.org</strong>. The LTS version is recommended.</p>
+<p>Verify after installation:</p>
+<pre>node --version   # should show v18.x.x or higher
+npm --version    # should show 9.x.x or higher</pre>
+
+<h3>Step 2 — Clone the Repository</h3>
+<pre>git clone https://github.com/matiyashu/Brand-Health-Tracker---Mental-Availability-Physical-Availability.git
+cd Brand-Health-Tracker---Mental-Availability-Physical-Availability</pre>
+
+<h3>Step 3 — Install Dependencies</h3>
+<pre>npm install</pre>
+<p>This reads <code>package.json</code> and installs all required packages into the <code>node_modules/</code> folder. Takes 30–60 seconds on first run.</p>
+
+<h3>Step 4 — Run the Development Server</h3>
+<pre>npm run dev</pre>
+<p>Open your browser and go to: <strong>http://localhost:3000</strong></p>
+
+<div class="callout">
+  <strong>No environment variables needed.</strong> The app runs in demo mode with sample data. No database connection string, no API keys, no .env file required for the current UI build.
+</div>
+
+<h3>Step 5 — Build for Production (Optional)</h3>
+<pre>npm run build   # creates optimised production build
+npm start       # serves the production build</pre>
+
+<h3>Available npm Scripts</h3>
+<table>
+  <tr><th>Command</th><th>What It Does</th></tr>
+  <tr><td><code>npm run dev</code></td><td>Start development server with hot reload (port 3000)</td></tr>
+  <tr><td><code>npm run build</code></td><td>Create optimised production build (also runs ESLint + TypeScript checks)</td></tr>
+  <tr><td><code>npm start</code></td><td>Serve the production build</td></tr>
+  <tr><td><code>npm run lint</code></td><td>Run ESLint across all TypeScript/TSX files</td></tr>
+</table>
+
+<h3>Folder Structure</h3>
+<pre>brandhealth/
+├── app/                          Next.js pages (App Router)
+│   ├── page.tsx                  Landing page
+│   ├── layout.tsx                Root layout
+│   ├── globals.css               Global styles + colour tokens
+│   └── dashboard/
+│       ├── layout.tsx            Dashboard shell + SegmentProvider
+│       ├── page.tsx              Dashboard overview
+│       ├── analytics/            Brand KPIs
+│       ├── mental-advantage/     Mental Advantage heatmap
+│       ├── physical/             Physical Availability (5 tabs)
+│       ├── reach/                Marketing Reach
+│       ├── wom/                  WOM Tracker
+│       ├── forecast/             Forecast Engine (5 tabs)
+│       ├── ceps/                 CEP Builder
+│       ├── surveys/              Survey builder + upload
+│       ├── reports/              Report generation
+│       ├── help/                 Product manual
+│       └── settings/             Settings
+├── components/                   Shared React components
+│   ├── sidebar.tsx               Navigation
+│   ├── segment-toggle.tsx        Segment switcher
+│   ├── data-entry-modal.tsx      Manual entry + Excel upload modal
+│   └── ...
+├── contexts/
+│   └── segment-context.tsx       Global segment state
+├── lib/
+│   ├── utils.ts                  cn() class utility
+│   └── cbm-engine/               CBM formula contracts + validators
+│       ├── formula-contracts/    FROZEN — MPen, MMS, NS, SoM formulas
+│       ├── mantra-validators/    CBM compliance checks
+│       ├── attribute-rules/      CEP wording linter
+│       └── survey-guards/        Pre-launch survey checklist
+├── package.json                  Dependencies manifest
+├── tailwind.config.ts            Tailwind configuration + custom colours
+├── tsconfig.json                 TypeScript configuration
+└── next.config.mjs               Next.js configuration</pre>
+
+<hr class="section-divider">
+
+<!-- ══ 8. FORMULA REFERENCE ════════════════════════════════════════════════════ -->
+<h2 id="formulas">8. Formula Reference</h2>
+
+<table>
+  <tr><th>KPI</th><th>Formula</th><th>Target / Benchmark</th></tr>
+  <tr>
+    <td><strong>Mental Penetration (MPen)</strong></td>
+    <td>Buyers linking ≥1 CEP to brand ÷ Total sample × 100</td>
+    <td>&gt;50% is strong for a market leader</td>
+  </tr>
+  <tr>
+    <td><strong>Mental Market Share (MMS)</strong></td>
+    <td>Brand's total CEP links ÷ Total CEP links (all brands) × 100</td>
+    <td>Should track close to Sales Market Share</td>
+  </tr>
+  <tr>
+    <td><strong>Network Score (NS)</strong></td>
+    <td>Total CEP links for brand ÷ Buyers with MPen for that brand</td>
+    <td>&gt;4.0 is healthy breadth</td>
+  </tr>
+  <tr>
+    <td><strong>Share of Mind (SoM)</strong></td>
+    <td>Brand CEP links ÷ Total links among MPen base × 100</td>
+    <td>Benchmark against MMS</td>
+  </tr>
+  <tr>
+    <td><strong>DJ Expected Score</strong></td>
+    <td>(Row Total × Column Total) ÷ Grand Total</td>
+    <td>Used to calculate Mental Advantage deviation</td>
+  </tr>
+  <tr>
+    <td><strong>Mental Advantage Deviation</strong></td>
+    <td>Actual Score − DJ Expected Score</td>
+    <td>≥+5pp = DEFEND · ±4pp = MAINTAIN · ≤−5pp = BUILD</td>
+  </tr>
+  <tr>
+    <td><strong>Net WOM</strong></td>
+    <td>PWOM − NWOM</td>
+    <td>Positive is healthy; negative is urgent</td>
+  </tr>
+  <tr>
+    <td><strong>WOM Ratio</strong></td>
+    <td>PWOM ÷ NWOM</td>
+    <td>&gt;4× is strong advocacy balance</td>
+  </tr>
+  <tr>
+    <td><strong>Branding Ratio (Reach)</strong></td>
+    <td>Correctly Branded % ÷ Noticed %</td>
+    <td>&gt;70% is strong; &lt;60% = "vampire creative"</td>
+  </tr>
+  <tr>
+    <td><strong>MMS → SMS Correlation</strong></td>
+    <td>r = 0.83 (MMS leads SMS by 1–2 quarters)</td>
+    <td>MMS &gt; SMS = physical gap; SMS &gt; MMS = mental gap</td>
+  </tr>
+</table>
+
+<hr class="section-divider">
+
+<div style="text-align:center; color:#9ca3af; font-size:9.5pt; margin-top:40px; padding-top:20px; border-top: 1px solid #e5e7eb;">
+  <p>Fortuna Brand Health Tracker &nbsp;·&nbsp; Built by Prima Hanura Akbar &nbsp;·&nbsp; Version 0.5 &nbsp;·&nbsp; April 2026</p>
+  <p>GitHub: https://github.com/matiyashu/Brand-Health-Tracker---Mental-Availability-Physical-Availability</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,214 @@
+// Fortuna Brand Health Tracker — Prisma Schema
+// CBM-compliant data model for brand health tracking
+// Phase 1 · Prima Hanura Akbar
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
+enum WaveStatus {
+  DRAFT
+  ACTIVE
+  COMPLETED
+}
+
+enum Segment {
+  NON_LIGHT  // Non-buyers + Light buyers (default, recruitment focus)
+  HEAVY      // Heavy buyers (retention focus)
+  OVERALL    // Full sample (competitive benchmarking)
+}
+
+enum CepType {
+  CEP         // Category Entry Point (target: 60-70% of attributes)
+  BASELINE    // Baseline competency (max 30%)
+  SECONDARY   // Secondary / equity attribute (max 20%)
+}
+
+enum SevenW {
+  WHO
+  WHAT
+  WHEN
+  WHERE
+  WHY
+  WITH_WHAT
+  WITH_WHOM
+}
+
+// ─── Core Models ─────────────────────────────────────────────────────────────
+
+model Project {
+  id          String   @id @default(cuid())
+  name        String   // e.g. "Indonesian Credit Cards 2024"
+  category    String   // e.g. "Credit Cards"
+  country     String   // e.g. "Indonesia"
+  focalBrand  String   // e.g. "BCA"
+  description String?
+  status      String   @default("ACTIVE")
+  ownerId     String   // Clerk userId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  waves  Wave[]
+  brands Brand[]
+  ceps   Cep[]
+
+  @@index([ownerId])
+}
+
+model Wave {
+  id          String     @id @default(cuid())
+  projectId   String
+  label       String     // e.g. "Q4 2024"
+  period      String     // e.g. "2024-Q4"
+  startDate   DateTime
+  endDate     DateTime
+  sampleSize  Int        @default(0)
+  status      WaveStatus @default(DRAFT)
+  notes       String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  project    Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  linkages   Linkage[]
+  kpis       WaveKpi[]
+  womData    WomData[]
+  reachData  ReachData[]
+  presenceData ChannelPresence[]
+
+  @@index([projectId])
+}
+
+model Brand {
+  id          String  @id @default(cuid())
+  projectId   String
+  name        String
+  isFocal     Boolean @default(false)
+  displayOrder Int    @default(0) // alphabetical enforced at app layer
+  createdAt   DateTime @default(now())
+
+  project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  linkages  Linkage[]
+  kpis      WaveKpi[]
+  womData   WomData[]
+
+  @@unique([projectId, name])
+  @@index([projectId])
+}
+
+model Cep {
+  id          String   @id @default(cuid())
+  projectId   String
+  text        String   // The CEP wording (no superlatives enforced at app layer)
+  type        CepType  @default(CEP)
+  dimension   SevenW?  // Which 7W dimension it belongs to
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  linkages  Linkage[]
+
+  @@index([projectId])
+}
+
+// ─── Analytics Models ─────────────────────────────────────────────────────────
+
+model Linkage {
+  id       String  @id @default(cuid())
+  waveId   String
+  brandId  String
+  cepId    String
+  score    Float   // % of buyers who link this brand to this CEP (0-100)
+  segment  Segment @default(NON_LIGHT)
+
+  wave   Wave   @relation(fields: [waveId], references: [id], onDelete: Cascade)
+  brand  Brand  @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  cep    Cep    @relation(fields: [cepId], references: [id], onDelete: Cascade)
+
+  @@unique([waveId, brandId, cepId, segment])
+  @@index([waveId])
+  @@index([brandId])
+}
+
+model WaveKpi {
+  id        String  @id @default(cuid())
+  waveId    String
+  brandId   String
+  segment   Segment
+
+  // CBM KPIs — calculated by analytics service or entered manually
+  mpen      Float?  // Mental Penetration % (0-100)
+  mms       Float?  // Mental Market Share % (0-100)
+  ns        Float?  // Network Score (1 to CEP count)
+  som       Float?  // Share of Mind % (0-100)
+  sms       Float?  // Sales Market Share % (0-100) — entered manually
+  awareness Float?  // Prompted Awareness % (0-100)
+
+  // DJ normalization outputs (calculated by Python service)
+  djExpected Float? // DJ-expected MMS based on penetration
+  djDeviation Float? // MMS - djExpected
+
+  calculatedAt DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  wave   Wave   @relation(fields: [waveId], references: [id], onDelete: Cascade)
+  brand  Brand  @relation(fields: [brandId], references: [id], onDelete: Cascade)
+
+  @@unique([waveId, brandId, segment])
+  @@index([waveId])
+}
+
+model WomData {
+  id      String @id @default(cuid())
+  waveId  String
+  brandId String
+  pwom    Float  // Positive WOM per 100 category buyers
+  nwom    Float  // Negative WOM per 100 category buyers
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  wave   Wave   @relation(fields: [waveId], references: [id], onDelete: Cascade)
+  brand  Brand  @relation(fields: [brandId], references: [id], onDelete: Cascade)
+
+  @@unique([waveId, brandId])
+  @@index([waveId])
+}
+
+model ReachData {
+  id            String @id @default(cuid())
+  waveId        String
+  creativeName  String
+  noticedPct    Float  // Effective reach — de-branded stimulus
+  brandedPct    Float  // Correctly branded %
+  brandingRatio Float? // Calculated: brandedPct / noticedPct
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  wave Wave @relation(fields: [waveId], references: [id], onDelete: Cascade)
+
+  @@unique([waveId, creativeName])
+  @@index([waveId])
+}
+
+model ChannelPresence {
+  id              String @id @default(cuid())
+  waveId          String
+  channelName     String // e.g. "Bank Branches", "ATMs", "Online", "Agent Banking"
+  coveragePct     Float  // Brand's coverage % in this channel
+  categoryNormPct Float? // Category norm % for comparison
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  wave Wave @relation(fields: [waveId], references: [id], onDelete: Cascade)
+
+  @@unique([waveId, channelName])
+  @@index([waveId])
+}

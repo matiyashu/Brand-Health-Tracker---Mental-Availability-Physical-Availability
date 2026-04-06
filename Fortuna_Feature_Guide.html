@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fortuna — Page-by-Page Feature Guide</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11pt;
+    color: #1a1a1a;
+    margin: 0;
+    background: #f9fafb;
+  }
+  a { color: #0FA958; }
+
+  /* Cover */
+  .cover {
+    background: #1a1a1a;
+    color: white;
+    padding: 80px 60px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .cover .logo {
+    width: 64px; height: 64px;
+    background: #0FA958;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28pt; font-weight: 900; color: white;
+    margin-bottom: 28px;
+  }
+  .cover h1 { font-size: 32pt; margin: 0 0 10px; color: white; }
+  .cover .sub { font-size: 14pt; color: #9ca3af; margin: 0 0 40px; }
+  .cover .meta { font-size: 10pt; color: #6b7280; border-top: 1px solid #374151; padding-top: 20px; }
+  .cover .green { color: #0FA958; }
+
+  /* TOC */
+  .toc-page {
+    background: white;
+    padding: 60px;
+    border-bottom: 3px solid #0FA958;
+  }
+  .toc-page h2 { font-size: 16pt; color: #0FA958; margin-top: 0; }
+  .toc-page ol { columns: 2; column-gap: 40px; padding-left: 20px; }
+  .toc-page li { margin-bottom: 8px; break-inside: avoid; }
+  .toc-page a { color: #0FA958; text-decoration: none; font-size: 11pt; }
+  .toc-page a:hover { text-decoration: underline; }
+
+  /* Page section */
+  .page-section {
+    background: white;
+    margin: 24px 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    page-break-before: always;
+  }
+  .page-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 24px 32px 16px;
+    border-bottom: 2px solid #f3f4f6;
+    background: #fafafa;
+  }
+  .page-number {
+    background: #0FA958;
+    color: white;
+    font-size: 16pt;
+    font-weight: 900;
+    width: 52px; height: 52px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    shrink: 0;
+    flex-shrink: 0;
+  }
+  .page-header h2 { margin: 0 0 4px; font-size: 16pt; color: #1a1a1a; }
+  .route {
+    font-family: Consolas, monospace;
+    font-size: 9.5pt;
+    background: #f3f4f6;
+    padding: 2px 8px;
+    border-radius: 4px;
+    color: #6b7280;
+  }
+
+  /* Screenshot */
+  .screenshot-box {
+    padding: 20px 32px;
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .screenshot-box img {
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    display: block;
+  }
+  .no-shot {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+    font-size: 10pt;
+    background: #f3f4f6;
+    border-radius: 6px;
+    border: 2px dashed #e5e7eb;
+  }
+
+  /* Description + features */
+  .description-block, .features-block {
+    padding: 20px 32px;
+  }
+  .description-block { border-bottom: 1px solid #f3f4f6; }
+  h3 {
+    font-size: 10pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #9ca3af;
+    margin: 0 0 10px;
+  }
+  .description-block p {
+    margin: 0;
+    font-size: 11pt;
+    color: #374151;
+    line-height: 1.6;
+  }
+  .features-block ul {
+    margin: 0;
+    padding-left: 20px;
+    list-style: none;
+  }
+  .features-block li {
+    font-size: 10.5pt;
+    color: #4b5563;
+    margin-bottom: 5px;
+    padding-left: 4px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .features-block li::before {
+    content: "→";
+    color: #0FA958;
+    font-weight: bold;
+    position: absolute;
+    left: -16px;
+  }
+
+  /* Content wrapper */
+  .content { max-width: 960px; margin: 0 auto; padding: 0 24px 60px; }
+
+  @media print {
+    .page-section { page-break-before: always; box-shadow: none; margin: 0; border-radius: 0; }
+    .cover { page-break-after: always; }
+    .toc-page { page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="logo">F</div>
+  <h1>Fortuna Brand Health Tracker</h1>
+  <p class="sub">Page-by-Page Feature Guide · Screenshots &amp; Explanations</p>
+  <p style="color:#6b7280; font-size:11pt; margin-bottom:40px;">
+    A complete visual reference of every page and feature in the platform.<br>
+    Built on CBM methodology · Science-based brand measurement.
+  </p>
+  <table style="border-collapse:collapse; font-size:10.5pt;">
+    <tr>
+      <td style="color:#6b7280; padding: 4px 20px 4px 0;">Total Pages</td>
+      <td style="color:white; font-weight:bold;">14</td>
+    </tr>
+    <tr>
+      <td style="color:#6b7280; padding: 4px 20px 4px 0;">Platform</td>
+      <td style="color:white; font-weight:bold;">Next.js 14 · Tailwind CSS · Recharts</td>
+    </tr>
+    <tr>
+      <td style="color:#6b7280; padding: 4px 20px 4px 0;">Methodology</td>
+      <td style="color:white; font-weight:bold;">CBM (Category Buyer Memory)</td>
+    </tr>
+    <tr>
+      <td style="color:#6b7280; padding: 4px 20px 4px 0;">Built by</td>
+      <td style="color:white; font-weight:bold;">Prima Hanura Akbar</td>
+    </tr>
+    <tr>
+      <td style="color:#6b7280; padding: 4px 20px 4px 0;">Version</td>
+      <td style="color:white; font-weight:bold;">0.5 · April 2026</td>
+    </tr>
+  </table>
+  <div class="meta">
+    GitHub: https://github.com/matiyashu/Brand-Health-Tracker---Mental-Availability-Physical-Availability
+  </div>
+</div>
+
+<!-- TOC -->
+<div class="toc-page">
+  <h2>Table of Contents</h2>
+  <ol>
+    <li><a href="#page-landing">1. Landing Page</a></li>
+    <li><a href="#page-projects">2. Projects</a></li>
+    <li><a href="#page-dashboard">3. Dashboard Overview</a></li>
+    <li><a href="#page-analytics">4. Brand KPIs</a></li>
+    <li><a href="#page-mental-advantage">5. Mental Advantage</a></li>
+    <li><a href="#page-physical">6. Physical Availability</a></li>
+    <li><a href="#page-reach">7. Marketing Reach</a></li>
+    <li><a href="#page-wom">8. WOM Tracker</a></li>
+    <li><a href="#page-forecast">9. Forecast Engine</a></li>
+    <li><a href="#page-ceps">10. CEP Builder</a></li>
+    <li><a href="#page-surveys">11. Surveys</a></li>
+    <li><a href="#page-reports">12. Reports</a></li>
+    <li><a href="#page-help">13. Help & Documentation</a></li>
+    <li><a href="#page-settings">14. Settings</a></li>
+  </ol>
+</div>
+
+<!-- PAGES -->
+<div class="content">
+  
+  <!-- ══ LANDING PAGE ══ -->
+  <div class="page-section" id="page-landing">
+    <div class="page-header">
+      <div class="page-number">01</div>
+      <div>
+        <h2>Landing Page</h2>
+        <code class="route">http://localhost:3000</code>
+      </div>
+    </div>
+
+    <div class="screenshot-box">
+      <img src="screenshots/landing.png" alt="Landing Page screenshot" onerror="this.parentElement.innerHTML='<div class=&quot;no-shot&quot;>Screenshot not available</div>'" />
+    </div>
+
+    <div class="description-block">
+      <h3>Overview</h3>
+      <p>The entry point of Fortuna. Presents the platform value proposition and provides access to the dashboard. Includes a brief overview of CBM methodology and a direct call-to-action to open the dashboard.</p>
+    </div>
+
+    <div class="features-block">
+      <h3>Features &amp; Components</h3>
+      <ul>
+        <li>Platform introduction — Fortuna brand identity and tagline</li>
+            <li>"Open Dashboard" button — direct entry to the analytics suite</li>
+            <li>CBM methodology badge (Science-Based, CBM-Compliant)</li>
+            <li>Platform description highlighting Mental Availability, Physical Availability, and Double Jeopardy normalization</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══ PROJECTS ══ -->
+  <div class="page-section" id="page-projects">
+    <div class="page-header">
+      <div class="page-number">02</div>
+      <div>
+        <h2>Projects</h2>
+        <code class="route">http://localhost:3000/projects</code>
+      </div>
+    </div>
+
+    <div class="screenshot-box">
+      <img src="screenshots/projects.png" alt="Projects screenshot" onerror="this.parentElement.innerHTML='<div class=&quot;no-shot&quot;>Screenshot not available</div>'" />
+    </div>
+
+    <div class="description-block">
+      <h3>Overview</h3>
+      <p>The project hub. Manage multiple brand tracking studies from one place. Switch between active projects or create new ones.</p>
+    </div>
+
+    <div class="features-block">
+      <h3>Features &amp; Components</h3>
+      <ul>
+        <li>Project cards — each card represents a brand tracking programme (e.g. Indonesian Credit Cards, Coffee Shops Jakarta)</li>
+            <li>Status badges — shows wave status (Active, Draft, Completed)</li>
+            <li>Quick-access links to each project's dashboard</li>
+            <li>"AI Generate Project" — automatically generate a new project structure from a brand brief</li>
+            <li>Project metadata — category, country, last wave date</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══ DASHBOARD OVERVIEW ══ -->
+  <div class="page-section" id="page-dashboard">
+    <div class="page-header">
+      <div class="page-number">03</div>
+      <div>
+        <h2>Dashboard Overview</h2>
+        <code class="route">http://localhost:3000/dashboard</code>
+      </div>
+    </div>
+
+    <div class="screenshot-box">
+      <img src="screenshots/dashboard.png" alt="Dashboard Overview screenshot" onerror="this.parentElement.innerHTML='<div class=&quot;no-shot&quot;>Screenshot not available</div>'" />
+    </div>
+
+    <div class="description-block">
+      <h3>Overview</h3>
+      <p>The command centre of the brand health programme. Provides a CEO-ready summary of the current wave with full segment-aware analysis. All metrics and insights update dynamically when the segment toggle changes.</p>
+    </div>
+
+    <div class="features-block">
+      <h3>Features &amp; Components</h3>
+      <ul>
+        <li>Segment Toggle — switch between Non-buyers + Light (default), Heavy Buyers, Overall</li>
+            <li>Segment Banner — shows active segment, primary KPI, and strategic goal</li>
+            <li>4 KPI Cards — Mental Penetration, Mental Market Share, Network Score, Share of Mind with wave-on-wave deltas</li>
+            <li>Key Insight Panel — CEO-ready headline + 3 metric analysis bars + recommendation (all segment-specific)</li>
+            <li>MMS vs SMS Gap Diagnosis — identifies whether the gap is a mental or physical availability problem</li>
+            <li>Add Data button — opens the data entry modal for manual input or Excel upload</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══ BRAND KPIS ══ -->
+  <div class="page-section" id="page-analytics">
+    <div class="page-header">
+      <div class="page-number">04</div>
+      <div>
+        <h2>Brand KPIs</h2>
+        <code class="route">http://localhost:3000/dashboard/analytics</code>
+      </div>
+    </div>
+
+    <div class="screenshot-box">
+      <img src="screenshots/analytics.png" alt="Brand KPIs screenshot" onerror="this.parentElement.innerHTML='<div class=&quot;no-shot&quot;>Screenshot not available</div>'" />
+    </div>
+
+    <div class="description-block">
+      <h3>Overview</h3>
+      <p>Competitive benchmarking page. Shows all brands in the category side-by-side, ranked by the active segment's focal KPI. DJ-normalized scores ensure fair comparison across brands of different sizes.</p>
+    </div>
+
+    <div class="features-block">
+      <h3>Features &amp; Components</h3>
+      <ul>
+        <li>Competitive Bar Chart — all brands ranked by MPen (non-light), SoM (heavy), or MMS (overall)</li>
+            <li>Focal brand (BCA) highlighted in neon green; competitors in gray</li>
+            <li>Segment-aware ranking — order changes between segments</li>
+            <li>Competitive analysis panel — headline + key insight per segment</li>
+            <li>Data requirements checklist — CBM compliance flags for the current wave</li>
+            <li>DJ normalization applied — deviation from expected shown in data table</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══ MENTAL ADVANTAGE ══ -->
+  <div class="page-section" id="page-mental-advantage">
+    <div class="page-header">
+      <div class="page-number">05</div>
+      <div>
+        <h2>Mental Advantage</h2>
+        <code class="route">http://localhost:3000/dashboard/mental-advantage</code>
+      </div>
+    </div>
+
+    <div class="screenshot-box">
+      <img src="screenshots/mental-advantage.png" alt="Mental Advantage screenshot" onerror="this.parentElement.innerHTML='<div class=&quot;no-shot&quot;>Screenshot not available</div>'" />
+    </div>
+
+    <div class="description-block">
+      <h3>Overview</h3>
+      <p>The Mental Advantage map shows a brand × CEP heatmap. Each cell displays how much a brand over- or under-performs its DJ-expected score on a specific Category Entry Point. This drives the creative and media brief.</p>
+    </div>
+
+    <div class="features-block">
+      <h3>Features &amp; Components</h3>
+      <ul>
+        <li>Brand × CEP Heatmap — matrix of all brands vs all CEPs with deviation scores</li>
+            <li>DEFEND cells (green, ≥+5pp) — mental assets; feature consistently in media</li>
+            <li>MAINTAIN cells (gray, ±4pp) — on-par performance; hold current activity</li>
+            <li>BUILD cells (red, ≤−5pp) — mental gaps; prioritise in next campaign</li>
+            <li>DJ Expected Score Formula — Expected = (Row Total × Col Total) ÷ Grand Total</li>
+            <li>Strategic Summary Cards — per-brand count of DEFEND / MAINTAIN / BUILD cells</li>
+            <li>Add Data button — upload the full linkage matrix via CSV</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══ PHYSICAL AVAILABILITY ══ -->
+  <div class="page-section" id="page-physical">
+    <div class="page-header">
+      <div class="page-number">06</div>
+      <div>
+        <h2>Physical Availability</h2>
+        <code class="route">http://localhost:3000/dashboard/physical</code>
+      </div>
+    </div>
+
+    <div class="screenshot-box">
+      <img src="screenshots/physical.png" alt="Physical Availability screenshot" onerror="this.parentElement.innerHTML='<div class=&quot;no-shot&quot;>Screenshot not available</div>'" />
+    </div>
+
+    <div class="description-block">
+      <h3>Overview</h3>
+      <p>Three-pillar physical availability audit. Measures whether buyers can actually find and buy your brand across all distribution channels and touchpoints. Contains five tabs for different measurement dimensions.</p>
+    </div>
+
+    <div class="features-block">
+      <h3>Features &amp; Components</h3>
+      <ul>
+        <li>Overview Tab — 4 KPI cards (coverage %, active channels, strong assets, MMS gap) + pillar summary</li>
+            <li>Presence Tab — channel coverage table vs category norm, emerging outlets tracker</li>
+            <li>Portfolio Tab — SKU contribution matrix (sales %, penetration %, efficiency ratio), duplication of purchase gaps</li>
+            <li>Prominence Tab — Fame × Uniqueness matrix for distinctive assets, rented prominence tracker</li>
+            <li>Gap Analysis Tab — segment-aware MMS vs SMS diagnosis (changes content per segment toggle)</li>
+            <li>Add Data button on each tab — specific fields and CSV templates per pillar</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══ MARKETING REACH ══ -->
+  <div class="page-section" id="page-reach">
+    <div class="page-header">
+      <div class="page-number">07</div>
+      <div>
+        <h2>Marketing Reach</h2>
+        <code class="route">http://localhost:3000/dashboard/reach</code>
+      </div>
+    </div>
+
+    <div class="screenshot-box">
+      <img src="screenshots/reach.png" alt="Marketing Reach screenshot" onerror="this.parentElement.innerHTML='<div class=&quot;no-shot&quot;>Screenshot not available</div>'" />
+    </div>
+
+    <div class="description-block">
+      <h3>Overview</h3>
+      <p>Measures the effectiveness of advertising — both whether it reached category buyers (Noticed %) and whether they correctly attributed it to the brand (Correct Branding %). Uses de-branded stimuli for accurate measurement.</p>
+    </div>
+
+    <div class="features-block">
+      <h3>Features &amp; Components</h3>
+      <ul>
+        <li>Summary KPI Cards — overall Noticed %, Correct Branding %, Branding Ratio, creative count</li>
+            <li>Trend Chart — wave-on-wave bars for Noticed % vs Correctly Branded % per creative</li>
+            <li>Creative Performance Table — all creatives with scores, Strong / Medium / Weak rating, wave period</li>
+            <li>Branding Ratio — Branded ÷ Noticed. Below 60% flags as "vampire creative"</li>
+            <li>Upload Creative button — store the raw ad file alongside its scores</li>
+            <li>Add Data modal — Noticed %, Branded %, wave period per creative</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══ WOM TRACKER ══ -->
+  <div class="page-section" id="page-wom">
+    <div class="page-header">
+      <div class="page-number">08</div>
+      <div>
+        <h2>WOM Tracker</h2>
+        <code class="route">http://localhost:3000/dashboard/wom</code>
+      </div>
+    </div>
+
+    <div class="screenshot-box">
+      <img src="screenshots/wom.png" alt="WOM Tracker screenshot" onerror="this.parentElement.innerHTML='<div class=&quot;no-shot&quot;>Screenshot not available</div>'" />
+    </div>
+
+    <div class="description-block">
+      <h3>Overview</h3>
+      <p>Tracks Positive and Negative Word of Mouth per 100 category buyers. Uses binary measurement (did you / didn't you recommend in the past month) — not NPS intent scale. One of the strongest leading indicators of organic brand growth.</p>
+    </div>
+
+    <div class="features-block">
+      <h3>Features &amp; Components</h3>
+      <ul>
+        <li>WOM Summary Cards — PWOM, NWOM, Net WOM (PWOM − NWOM), WOM Ratio (PWOM ÷ NWOM)</li>
+            <li>Competitive WOM Table — all brands ranked by Net WOM with PWOM and NWOM breakdown</li>
+            <li>Trend Chart — PWOM and NWOM bars wave over wave for BCA</li>
+            <li>Analysis Panel — segment-aware headline + recommendation</li>
+            <li>WOM Ratio target: >4× is considered strong advocacy balance</li>
+            <li>Add WOM Data button — enter per-brand PWOM and NWOM per wave</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══ FORECAST ENGINE ══ -->
+  <div class="page-section" id="page-forecast">
+    <div class="page-header">
+      <div class="page-number">09</div>
+      <div>
+        <h2>Forecast Engine</h2>
+        <code class="route">http://localhost:3000/dashboard/forecast</code>
+      </div>
+    </div>
+
+    <div class="screenshot-box">
+      <img src="screenshots/forecast.png" alt="Forecast Engine screenshot" onerror="this.parentElement.innerHTML='<div class=&quot;no-shot&quot;>Screenshot not available</div>'" />
+    </div>
+
+    <div class="description-block">
+      <h3>Overview</h3>
+      <p>Five forward-looking forecast tools in one page. Covers mechanistic laws (Double Jeopardy), formula-based projections (CEP expected scores), statistical correlation (MMS→Sales), AI simulation, and growth potential mapping.</p>
+    </div>
+
+    <div class="features-block">
+      <h3>Features &amp; Components</h3>
+      <ul>
+        <li>Tab 1 — DJ Forecast: Scatter chart of brands on DJ curve + interactive scenario builder (drag pen target → predicted frequency)</li>
+            <li>Tab 2 — CEP Expected Scores: Full brand × CEP numerical matrix with Actual / Expected / Deviation columns</li>
+            <li>Tab 3 — MMS → Sales: Dual-line chart history + projection (r=0.83 correlation, 1–2 quarter lag)</li>
+            <li>Tab 4 — AI Predictions: Media spend multiplier slider, category twin benchmarks, AI-generated trend alerts</li>
+            <li>Tab 5 — Growth Potential: MPen by segment cards, growth waterfall chart, Recruitment vs Network Size priority framework</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══ CEP BUILDER ══ -->
+  <div class="page-section" id="page-ceps">
+    <div class="page-header">
+      <div class="page-number">10</div>
+      <div>
+        <h2>CEP Builder</h2>
+        <code class="route">http://localhost:3000/dashboard/ceps</code>
+      </div>
+    </div>
+
+    <div class="screenshot-box">
+      <img src="screenshots/ceps.png" alt="CEP Builder screenshot" onerror="this.parentElement.innerHTML='<div class=&quot;no-shot&quot;>Screenshot not available</div>'" />
+    </div>
+
+    <div class="description-block">
+      <h3>Overview</h3>
+      <p>Design a CBM-compliant attribute list for your brand tracking survey. Uses the 7W framework to generate Category Entry Points. The CBM Engine validates each attribute and flags violations before survey launch.</p>
+    </div>
+
+    <div class="features-block">
+      <h3>Features &amp; Components</h3>
+      <ul>
+        <li>7W Framework Tabs — Who, What, When, Where, Why, With What, With Whom</li>
+            <li>Attribute List Builder — add, edit, classify attributes as CEP / Baseline / Secondary</li>
+            <li>Composition Meter — visual gauge showing % split; target 60–70% CEPs</li>
+            <li>CBM Violation Flags — red border on attributes with superlatives, brand-specific wording, or duplicates</li>
+            <li>AI Generate button — auto-draft CEPs from a brand brief or URL</li>
+            <li>Violation types caught: modified wording, brand-specific CEPs, duplicate occasions</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══ SURVEYS ══ -->
+  <div class="page-section" id="page-surveys">
+    <div class="page-header">
+      <div class="page-number">11</div>
+      <div>
+        <h2>Surveys</h2>
+        <code class="route">http://localhost:3000/dashboard/surveys</code>
+      </div>
+    </div>
+
+    <div class="screenshot-box">
+      <img src="screenshots/surveys.png" alt="Surveys screenshot" onerror="this.parentElement.innerHTML='<div class=&quot;no-shot&quot;>Screenshot not available</div>'" />
+    </div>
+
+    <div class="description-block">
+      <h3>Overview</h3>
+      <p>Build and manage brand health fieldwork waves. Includes a block-based survey canvas, a 17-block question library, compliance checking, and a results upload pipeline.</p>
+    </div>
+
+    <div class="features-block">
+      <h3>Features &amp; Components</h3>
+      <ul>
+        <li>Block Library — 17 question blocks categorised as Core (mandatory), Standard (recommended), Optional</li>
+            <li>Survey Canvas — drag-and-drop blocks to build a wave in the correct CBM order</li>
+            <li>Core Blocks (teal border) — mandatory, cannot be removed: Category Screener, Brand Awareness, CEP Linkage, Purchase Behaviour</li>
+            <li>CBM Compliance Panel — real-time flags before survey export</li>
+            <li>Upload Results Tab — drag-and-drop Excel fieldwork data with 5-row preview</li>
+            <li>AI Analysis — auto-generated summary of key changes after upload</li>
+            <li>WhatsApp distribution support (via Settings → Integrations)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══ REPORTS ══ -->
+  <div class="page-section" id="page-reports">
+    <div class="page-header">
+      <div class="page-number">12</div>
+      <div>
+        <h2>Reports</h2>
+        <code class="route">http://localhost:3000/dashboard/reports</code>
+      </div>
+    </div>
+
+    <div class="screenshot-box">
+      <img src="screenshots/reports.png" alt="Reports screenshot" onerror="this.parentElement.innerHTML='<div class=&quot;no-shot&quot;>Screenshot not available</div>'" />
+    </div>
+
+    <div class="description-block">
+      <h3>Overview</h3>
+      <p>Generate client-ready outputs from the latest wave data. Four output formats covering different audiences — from C-suite PDF summaries to pivot-ready Excel exports.</p>
+    </div>
+
+    <div class="features-block">
+      <h3>Features &amp; Components</h3>
+      <ul>
+        <li>Executive Summary PDF — one-page CEO brief, auto-populated from latest wave</li>
+            <li>Full Report PPTX — multi-slide deck covering all analytics pages</li>
+            <li>CBM Compliance Report — methodology audit before client delivery</li>
+            <li>Raw Data Export XLSX — respondent-level or aggregate, pivot-ready format</li>
+            <li>Wave period selector — choose which wave to generate the report from</li>
+            <li>Section selector — choose which pages to include in PPTX</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══ HELP & DOCUMENTATION ══ -->
+  <div class="page-section" id="page-help">
+    <div class="page-header">
+      <div class="page-number">13</div>
+      <div>
+        <h2>Help & Documentation</h2>
+        <code class="route">http://localhost:3000/dashboard/help</code>
+      </div>
+    </div>
+
+    <div class="screenshot-box">
+      <img src="screenshots/help.png" alt="Help & Documentation screenshot" onerror="this.parentElement.innerHTML='<div class=&quot;no-shot&quot;>Screenshot not available</div>'" />
+    </div>
+
+    <div class="description-block">
+      <h3>Overview</h3>
+      <p>Full in-app product manual with three sections: Getting Started (intro + first-time workflow), Page Manual (how to use and interpret every page), and Reference (methodology, KPI formulas, FAQ).</p>
+    </div>
+
+    <div class="features-block">
+      <h3>Features &amp; Components</h3>
+      <ul>
+        <li>Getting Started — platform introduction, CBM Mantra, platform structure, 7-step first-time workflow</li>
+            <li>Page Manual — 10 pages covered with step-by-step how-to and data interpretation guides</li>
+            <li>CBM Basics — what brand tracking is, what CBM is, why non-buyers are primary</li>
+            <li>Methodology Guide — survey design rules, attribute composition, DJ normalization, analysis defaults</li>
+            <li>KPI Reference — 8 KPIs with formula, range, and target benchmark</li>
+            <li>FAQ — 10 common questions with detailed answers</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══ SETTINGS ══ -->
+  <div class="page-section" id="page-settings">
+    <div class="page-header">
+      <div class="page-number">14</div>
+      <div>
+        <h2>Settings</h2>
+        <code class="route">http://localhost:3000/dashboard/settings</code>
+      </div>
+    </div>
+
+    <div class="screenshot-box">
+      <img src="screenshots/settings.png" alt="Settings screenshot" onerror="this.parentElement.innerHTML='<div class=&quot;no-shot&quot;>Screenshot not available</div>'" />
+    </div>
+
+    <div class="description-block">
+      <h3>Overview</h3>
+      <p>Platform configuration. Manage theme preferences, integrations, data connections, and account settings.</p>
+    </div>
+
+    <div class="features-block">
+      <h3>Features &amp; Components</h3>
+      <ul>
+        <li>Theme settings — light/dark mode toggle</li>
+            <li>Integrations panel — WhatsApp Business API, Anthropic Claude API, Resend email</li>
+            <li>Data connections — database and external data source configuration</li>
+            <li>Account and organisation management</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
