@@ -37,7 +37,7 @@ Unlike traditional brand tracking (awareness scores, likeability ratings), Fortu
 | **Physical Availability** | Channel coverage, portfolio efficiency, distinctive asset prominence |
 | **Marketing Reach** | Effective reach × correct brand attribution |
 | **WOM** | Positive / negative word of mouth per 100 category buyers |
-| **Forecast** | DJ Law projections, MMS→Sales correlation, AI trend alerts |
+| **Forecast** | Double jeopardy Law projections, MMS→Sales correlation, AI trend alerts |
 
 ---
 
